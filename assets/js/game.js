@@ -4,7 +4,7 @@
 	// Generic function for dumping the JSON content for each button into the div
 	function displayAnimalInfo(){
 		var animal = $(this).attr('data-name');
-		var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=dc6zaTOxFJmzC&limit=10";
+		//var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=dc6zaTOxFJmzC&limit=10";
 		//Write code between the dashes below to hit the queryURL, take the data and display it in the div with an id of animalsmoviesView
 		
 		//------YOUR CODE GOES IN THESE DASHES
@@ -14,6 +14,8 @@
 		})
 		.done(function(response) {
 	     	 $("#animalsView").html(JSON.stringify(response));
+	     	 var results = response.data;
+         console.log(response)
 		}); 
 		//------
 	}
@@ -36,6 +38,36 @@
 	// ========================================================
 	// This function handles events where one button is clicked
 	$('#addAnimal').on('click', function(){
+		var animal = $(this).data('animal');
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+    $.ajax({
+                url: queryURL,
+                method: 'GET'
+            })
+            .done(function(response) {
+                var results = response.data;
+                console.log(response)
+
+                    for (var i = 0; i < results.length; i++) {
+                    var animalDiv = $('<div>');
+                    var p = $('<p>');
+
+                    console.log(results[i].rating);
+                    p.text(results[i].rating);
+
+                    var animalImage = $('<img>');
+                    animalImage.attr('src', results[i].images.fixed_height.url);
+
+                    animalDiv.append(p);
+                    animalDiv.append(animalImage);
+
+                    $('#gifsAppearHere').prepend(animalDiv);
+                }
+
+            });                
+
+
 		// This line of code will grab the input from the textbox
 		var animal = $('#animal-input').val().trim();
 		// The animal from the textbox is then added to our array
