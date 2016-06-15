@@ -3,6 +3,7 @@
 		
 
 	$('body').on('click', '.animal', function displayAnimalInfo(){
+		$("#gifsAppearHere").empty();
 		var animal = $(this).attr('data-name');
     var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=dc6zaTOxFJmzC&limit=10";
 
